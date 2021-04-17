@@ -2,6 +2,7 @@
 Plays one or more tracks.
 """
 
+from engine import debug, info
 from engine.tracks import Track
 
 from contextlib import contextmanager
@@ -27,7 +28,7 @@ class WaveCollapser(object):
         returns a collapsed wave from t0 for the specified duration. Returns
         an empty list if the wave requested is past the last wave.
         """
-        print(f"Collapsing interval {t0}")
+        debug(f"Collapsing interval {t0}")
 
         # First, add all of the waves that are in this range.
         waves = SortedList()
@@ -61,7 +62,7 @@ class WaveCollapser(object):
             wave_end_idx = min(wave.waveform.num_samples,
                                wave_start_idx + len(samples) - sample_start_idx)
 
-            print(f"Playing wave: {wave.waveform.freq} t={wave.time}, "
+            debug(f"Playing wave: {wave.waveform.freq} t={wave.time}, "
                 + f"seq [{wave_start_idx}, {wave_end_idx}) "
                 + f"starting at: {sample_start_idx}")
 
@@ -74,7 +75,6 @@ class WaveCollapser(object):
             # What is this even doing?
             samples[i] = int(samples[i] * 0x7f + 0x80)
 
-        # print(samples)
         return samples
 
 
@@ -84,10 +84,12 @@ class Player(object):
         self.sample_rate = sample_rate
         self.audio = PyAudio()
 
+        debug("Added tracks: " + str([track.name for track in self.tracks]))
+
     @contextmanager
     def open_stream(self):
         # Open the stream.
-        print("Opening stream.")
+        debug("Opening stream.")
         self.stream = self.audio.open(format=self.audio.get_format_from_width(1), # 8bit
                                       channels=1,                                 # mono
                                       rate=self.sample_rate,
@@ -95,7 +97,7 @@ class Player(object):
         try:
             yield
         finally:
-            print("Closing stream")
+            debug("Closing stream")
             self.stream.stop_stream()
             self.stream.close()
 
@@ -107,9 +109,13 @@ class Player(object):
         wave_collapser = WaveCollapser(waveforms, self.sample_rate)
 
         with self.open_stream():
+            info("Beginning playback...")
+
             t = 0.0
             samples = wave_collapser.collapse(t, CHUNK_SIZE)
             while len(samples) > 0:
                 self.stream.write(bytes(bytearray(samples)))
                 t += CHUNK_SIZE
                 samples = wave_collapser.collapse(t, CHUNK_SIZE)
+
+        info("Playback complete.")

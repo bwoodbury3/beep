@@ -1,12 +1,14 @@
 import os
 import sys
 
+from engine import info
+
 def test(*args):
-    print("Running unit tests...")
+    info("Running unit tests...")
     os.system("python -m pytest tests/")
 
 def run(*args):
-    print("Starting up...")
+    info("Starting up...")
     import songs.super_mario as super_mario
     super_mario.play()
 
