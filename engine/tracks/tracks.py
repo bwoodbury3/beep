@@ -4,7 +4,7 @@ as a series of notes or chords. Tracks may also be an imported waveform or a
 concatenation of several waveforms.
 """
 
-from .waveform import Waveform, Note
+from engine.waves import Waveform, Note
 
 from sortedcontainers import SortedList
 

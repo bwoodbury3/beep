@@ -1,6 +1,6 @@
 import pytest
 
-from sound import Note
+from engine.waves import Note
 
 def test_invalid_note():
     with pytest.raises(ValueError, match="is not a valid note."):

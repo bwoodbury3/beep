@@ -1,11 +1,13 @@
-from sound import Note, Player, Track
+from engine.player import Player
+from engine.tracks import Track
+from engine.waves import Note
 
 def test_play_an_a_sharp():
-    # Queue an A#3 for 1 second.
-    a_sharp_3 = Note("A#3", 1.0)
+    # Queue an A#3 for 0.5 seconds.
+    a_sharp_3 = Note("A#3", 0.5)
 
     # Add it the beginning of a track.
-    track = Track()
+    track = Track("")
     track.add_waveform(0.0, a_sharp_3)
 
     player = Player([track], track.sample_rate)
@@ -13,7 +15,7 @@ def test_play_an_a_sharp():
 
 def test_play_a_scale():
     # Play a short track with a C scale.
-    track = Track()
+    track = Track("")
 
     track.add_waveform(0.0, Note("C5", 0.2))
     track.add_waveform(0.2, Note("D5", 0.2))
@@ -29,7 +31,7 @@ def test_play_a_scale():
 
 def test_play_chords():
     # Play a few chords
-    track = Track()
+    track = Track("")
 
     track.add_waveform(0.0, Note("C4", 0.5))
     track.add_waveform(0.0, Note("E4", 0.5))
@@ -51,7 +53,7 @@ def test_play_chords():
     player.play()
 
 def test_empty_track():
-    track = Track()
+    track = Track("")
 
     player = Player([track], track.sample_rate)
     player.play()

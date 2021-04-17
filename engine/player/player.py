@@ -2,7 +2,7 @@
 Plays one or more tracks.
 """
 
-from .tracks import Track, TimedWave
+from engine.tracks import Track
 
 from contextlib import contextmanager
 from pyaudio import PyAudio

@@ -1,4 +1,5 @@
-from sound import CustomNotesTrack, Player
+from engine.tracks import CustomNotesTrack
+from engine.player import Player
 
 
 def get_melody():

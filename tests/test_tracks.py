@@ -1,6 +1,7 @@
 import pytest
 
-from sound import Track, Waveform
+from engine.tracks import Track
+from engine.waves import Waveform
 
 class NoopWaveform(Waveform):
     def __init__(self, index, sample_rate=22050):
@@ -12,7 +13,7 @@ class NoopWaveform(Waveform):
 
 
 def test_track_order():
-    track = Track()
+    track = Track("")
     waveform_a = NoopWaveform('a')
     waveform_b = NoopWaveform('b')
 
@@ -37,14 +38,14 @@ def test_track_order():
         index += 1
 
 def test_mismatched_sample_rate():
-    track = Track(sample_rate=20000)
+    track = Track("", sample_rate=20000)
     wave = Waveform(1.0, sample_rate=10000)
 
     with pytest.raises(ValueError):
         track.add_waveform(0.0, wave)
 
 def test_simultaneous_waveforms():
-    track = Track()
+    track = Track("")
     wave_a = NoopWaveform('a')
     wave_b = NoopWaveform('b')
 
