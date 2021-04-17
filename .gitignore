@@ -1,0 +1,6 @@
+# Virtualenvs
+beep-venv
+
+# Python artifacts
+*.pyc
+__pycache__
