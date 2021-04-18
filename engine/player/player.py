@@ -2,8 +2,6 @@
 Plays one or more tracks.
 """
 
-import engine.player.sample as sample
-
 from engine import debug, info
 from engine.tracks import Track
 
@@ -32,9 +30,15 @@ class WaveCollapser(object):
             sample_rate: The sample rate.
             sample_width: The bit width of each sample.
         """
+
+        # Let's catch this as soon as possible.
+        if sample_width % 8 != 0:
+            raise ValueError(
+                f"sample_width {sample_width} is not a multiple of 8.")
+
         self.waveforms = waveforms
         self.sample_rate = sample_rate
-        self.sampler = sample.get_sampler_from_width(sample_width)
+        self.sample_width = sample_width
 
     def collapse(self, t0: float, duration: float, volume: float) -> list:
         """
@@ -100,21 +104,22 @@ class WaveCollapser(object):
                   f"chunk offset: {interval_start_idx}")
 
             # Add this sample to our array of samples.
-            wave_samples = wave.waveform.get_samples(wave_start_idx, wave_end_idx)
+            wave_samples = wave.waveform.get_frames(wave_start_idx,
+                                                    wave_end_idx,
+                                                    self.sample_width,
+                                                    volume)
             for i in range(len(wave_samples)):
                 samples[i + interval_start_idx] += wave_samples[i]
 
         # Step 4. Initialize an empty array of "frames". Frames are one byte, so
         # we need to create a list of size (bit_width * samples).
-        num_bytes = self.sampler.bytes_per_sample()
+        num_bytes = int(self.sample_width / 8)
         frames = bytearray(len(samples) * num_bytes)
 
-        # Step 5. For each sample, convert the floating point representation to
-        # a frame of the correct bit width. See engine.player.sample.Sampler.
+        # Step 5. For each sample, convert to a bytearray of frames.
         for i in range(len(samples)):
-            full_frame = self.sampler.convert(volume * samples[i])
             for j in range(num_bytes):
-                b = (full_frame >> (8 * j)) & 0xFF
+                b = (samples[i] >> (8 * j)) & 0xFF
                 frames[i * num_bytes + j] = b
 
         return frames
