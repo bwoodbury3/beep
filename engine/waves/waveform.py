@@ -74,7 +74,6 @@ class Note(Waveform):
             )
 
         return [
-            # int(math.sin(2 * math.pi * self.freq * t / self.sample_rate) * 0x7f + 0x80)
-            0.3 * math.sin(2 * math.pi * self.freq * t / self.sample_rate)
+            math.sin(2 * math.pi * self.freq * t / self.sample_rate)
             for t in range(start_sample, end_sample)
         ]

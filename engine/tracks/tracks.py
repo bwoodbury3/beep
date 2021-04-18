@@ -95,7 +95,7 @@ class CustomNotesTrack(Track):
         Append a new note to the end of this track.
         """
         duration = beat_to_duration(self.tempo, beat)
-        self.add_waveform(self.offset, Note(note, duration))
+        self.add_waveform(self.offset, Note(note, duration, self.sample_rate))
         self.offset += duration
 
     def append_rest(self, beat: float):

@@ -204,5 +204,5 @@ def get_bass():
 def play():
     track1 = get_melody()
     track2 = get_bass()
-    player = Player([track1, track2], track1.sample_rate)
+    player = Player([track1, track2], sample_rate=track1.sample_rate, volume=0.3, sample_width=16)
     player.play()
