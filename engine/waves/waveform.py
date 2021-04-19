@@ -31,24 +31,6 @@ class Waveform(object):
         """
         return int(self.duration * self.sample_rate)
 
-    def get_samples(self, start_sample: int, end_sample: int) -> list:
-        """
-        Interface for getting a range of samples. This should return a list of
-        sequential samples starting at start_sample (inclusive) and ending at
-        end_sample (exclusive).
-
-        A sample is a discrete point on the audio wave between [-1.0, 1.0]. This
-        function will return an array of these.
-
-        Args:
-            start_sample: The first sample (inclusive).
-            end_sample: The end sample (exclusive).
-
-        Return:
-            List of samples.
-        """
-        raise NotImplementedError()
-
     def get_frames(self,
                    start_sample: int,
                    end_sample: int,
@@ -115,13 +97,14 @@ class Note(Waveform):
                    bit_width: int,
                    master_volume: float) -> list:
         """
-        Interface for getting samples as frames of the provided bit width. A
-        frame is a sample converted to the given bit width.
+        Get samples as frames of the provided bit width. A frame is a sample
+        converted to the given bit width.
 
         Args:
             start_sample: The first sample (inclusive).
             end_sample: The end sample (exclusive).
             bit_width: The bit width of each sample.
+            master_volume: The master volume to scale the wave by.
 
         Return:
             List of frames.

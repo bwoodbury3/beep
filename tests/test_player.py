@@ -49,7 +49,7 @@ def test_play_chords():
     track.add_waveform(1.5, Note("E5", 0.5))
     track.add_waveform(1.5, Note("G5", 0.5))
 
-    player = Player([track], track.sample_rate)
+    player = Player([track], track.sample_rate, volume=0.2)
     player.play()
 
 def test_empty_track():

@@ -99,7 +99,7 @@ class WaveCollapser(object):
             wave_end_idx = min(wave.waveform.num_samples,
                                wave_start_idx + len(samples) - interval_start_idx)
 
-            debug(f"Playing wave: {wave.waveform.freq} t={wave.time}, " +
+            debug(f"Playing wave: {wave.waveform} t={wave.time}, " +
                   f"wave sample: [{wave_start_idx}, {wave_end_idx}) " +
                   f"chunk offset: {interval_start_idx}")
 

@@ -1,5 +1,6 @@
-from engine.tracks import CustomNotesTrack
+from engine.tracks import CustomNotesTrack, Track
 from engine.player import Player
+from engine.waves import WavFile
 
 
 def get_melody():
@@ -201,8 +202,24 @@ def get_bass():
 
     return bass
 
+def get_star_wars():
+    track = Track("Star Wars")
+    wav_file = WavFile("songs/audio/StarWars60.wav")
+    track.add_waveform(0.0, wav_file)
+    return track
+
 def play():
-    track1 = get_melody()
-    track2 = get_bass()
-    player = Player([track1, track2], sample_rate=track1.sample_rate, volume=0.3, sample_width=16)
+    super_mario_melody = get_melody()
+    super_mario_bass = get_bass()
+    # star_wars = get_star_wars()
+
+    player = Player(
+        [
+            super_mario_melody,
+            super_mario_bass,
+            # star_wars
+        ],
+        sample_rate=super_mario_melody.sample_rate,
+        volume=0.3,
+        sample_width=16)
     player.play()
