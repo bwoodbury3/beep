@@ -47,6 +47,8 @@ class WavFile(Waveform):
         """
         self.filename = filename
         self.wav_file = InputAudioFile(filename, WAV_FORMAT)
+
+        # Read in class level attributes from the wav file header.
         self._read_metadata()
 
         duration = float(self.data_size) / self.bytes_per_sec

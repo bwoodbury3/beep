@@ -4,7 +4,7 @@ as a series of notes or chords. Tracks may also be an imported waveform or a
 concatenation of several waveforms.
 """
 
-from engine.waves import Waveform, Note
+from engine.waves import Note, Waveform, WavFile
 
 from sortedcontainers import SortedList
 
@@ -103,3 +103,15 @@ class CustomNotesTrack(Track):
         Append a rest interval.
         """
         self.offset += beat_to_duration(self.tempo, beat)
+
+
+class ImportedAudioTrack(Track):
+    def __init__(self, name, sample_rate=22050):
+        """
+        Creates a track that imports audio.
+        """
+        super().__init__(name, sample_rate=sample_rate)
+
+    def add_wav_file(self, offset: float, filename: str):
+        wav_file = WavFile(filename)
+        self.add_waveform(offset, wav_file)

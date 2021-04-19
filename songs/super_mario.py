@@ -1,4 +1,4 @@
-from engine.tracks import CustomNotesTrack, Track
+from engine.tracks import CustomNotesTrack, ImportedAudioTrack
 from engine.player import Player
 from engine.waves import WavFile
 
@@ -203,9 +203,8 @@ def get_bass():
     return bass
 
 def get_star_wars():
-    track = Track("Star Wars")
-    wav_file = WavFile("songs/audio/StarWars60.wav")
-    track.add_waveform(0.0, wav_file)
+    track = ImportedAudioTrack("Star Wars")
+    track.add_wav_file(0.0, "songs/audio/StarWars60.wav")
     return track
 
 def play():
